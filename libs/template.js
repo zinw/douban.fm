@@ -1,5 +1,5 @@
 var sys = require('sys');
-var color = require('colorful');
+var colors = require('colors');
 var printf = require('sprintf').sprintf;
 var exec = require('child_process').exec;
 var notifier = new require('node-notifier')();
@@ -9,9 +9,9 @@ var pkg = require('../package');
 exports.logo = function(account) {
   return printf(
     '%s %s %s',
-    color.yellow('Douban FM'),
-    color.grey('v' + pkg.version),
-    account ? color.grey('/ ' + account.user_name) : ''
+    'Douban FM'.green,
+    ('v' + pkg.version).green.dim,
+    account ? ('/ ' + account.user_name).green.bold : ''
   );
 }
 
@@ -32,10 +32,10 @@ exports.updateTab = function(str) {
   );
 }
 
-exports.title = function(str, c) {
+exports.title = function(str) {
   if (!str) return false;
   // this.updateTab(str);
-  return color[c || 'grey'](str);
+  return (str).green;
 }
 
 exports.listing = function() {
@@ -48,30 +48,30 @@ exports.loading = function() {
 
 exports.pause = function() {
   this.title('Douban FM');
-  return color.yellow('||');
+  return '||'.red;
 }
 
 exports.song = function(s, selectText, silence) {
   var label = '♫ ';
   var song = s.title ? s : {};
   if (!song.title) {
-    song.text = label + '未知曲目...';
+    song.text = label + '未知曲目...'.red;
     if (!silence) this.notify(song);
-    return color.grey(song.text);
+    return (song.text).grey;
   }
   song.text = label + song.title + ' - ' + song.artist;
   song.open = utils.album(song.album);
   if (!silence) this.notify(song);
   return printf(
     '%s %s %s %s %s %s %s %s',
-    song.like == 1 ? color.red('♥') : color.grey('♥'),
-    color.green(song.title),
-    color.grey(song.kbps + 'kbps'),
-    color.grey('... ♪ ♫ ♫ ♪ ♫ ♫ ♪ ♪ ...'),
-    selectText || color.yellow(song.albumtitle),
-    selectText ? '' : color.grey('•'),
-    selectText ? '' : song.artist,
-    selectText ? '' : color.grey(song.public_time)
+    song.like == 1 ? '♥'.red : '♥'.white,
+    (song.title).magenta,
+    (song.kbps + 'kbps').trap.blue,
+    ('... ♪ ♫ ♫ ♪ ♫ ♫ ♪ ♪ ...').rainbow,
+    selectText || (song.albumtitle).yellow,
+    selectText ? '' : '•'.magenta,
+    selectText ? '' : (song.artist).cyan,
+    selectText ? '' : (song.public_time).blue
   )
 }
 

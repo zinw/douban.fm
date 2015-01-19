@@ -3,7 +3,7 @@ var path = require('path');
 var geci = require('geci');
 var mkdirp = require('mkdirp');
 var Player = require('player');
-var color = require('colorful');
+var colors = require('colors');
 var consoler = require('consoler');
 var termList = require('term-list-enhanced');
 var sdk = require('./sdk');
@@ -121,10 +121,10 @@ Fm.prototype.play = function(channel, account) {
   self.fetch(channel, account, function(err, songs, result) {
     if (err) {
       self.status = 'error';
-      return menu.update(channel.index, color.red(err.toString()));
+      return menu.update(channel.index, (err.toString().red));
     }
     // mark PRO account on logo
-    if (result && !result.warning) menu.update('header', color.inverse(' PRO '));
+    if (result && !result.warning) menu.update('header', ' PRO '.inverse.yellow);
     self.status = 'ready';
     self.player = new Player(songs, {
       src: 'url',
@@ -141,7 +141,7 @@ Fm.prototype.play = function(channel, account) {
       var isValidSong = song.title && song.sid;
       self.status = 'playing';
       // update playing label
-      menu.update('header', color.green('>'));
+      menu.update('header', '>'.green);
       // update song infomation
       menu.update(channel.index, template.song(song));
       // logging songs history
@@ -158,8 +158,8 @@ Fm.prototype.play = function(channel, account) {
       if (self.isShowLrc) {
         if (self.lrc) self.lrc.stop();
         geci.fetch(song, function(err, lrc) {
-          if (err) return menu.update('header', color.grey(errors.lrc_notfound + err.toString()));
-          if (!lrc) return menu.update('header', color.grey(errors.lrc_notfound));
+          if (err) return menu.update('header', (errors.lrc_notfound + err.toString()).grey);
+          if (!lrc) return menu.update('header', (errors.lrc_notfound).grey);
           self.lrc = geci.print(lrc, function(line, extra) {
             menu.update(channel.index, template.song(song, line));
           });
