@@ -43,7 +43,7 @@
     "colors": "*",
     "ffmetadata": "~1.0.2",
     "node-notifier": "~2.0.4",
-    "player": "0.1.7",
+    "player": "*",
     "douban-sdk": "~0.0.4",
     "term-list-enhanced": "0.1.0"
   },
